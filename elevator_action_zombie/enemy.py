@@ -5,10 +5,10 @@ from assistant import Auxiliar
 
 class Enemy_zombie_uno:
     def __init__(self,x,y,speed_walk,speed_run,gravity,jump_power,frame_rate_ms,move_rate_ms,jump_height) -> None:
-        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/zombies/Walk_zombie_1.png",10,1)
-        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/zombies/Walk_zombie_1.png",10,1,True)
-        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/zombies/Idle_zombie_1.png",9,1)
-        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/zombies/Idle_zombie_1.png",9,1,True)
+        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Walk_zombie_1.png",10,1)
+        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Walk_zombie_1.png",10,1,True)
+        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Idle_zombie_1.png",9,1)
+        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Idle_zombie_1.png",9,1,True)
         #self.jump_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/jump.png",11,1)
         #self.jump_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/jump.png",11,1,True)
         self.frame = 0
@@ -36,8 +36,7 @@ class Enemy_zombie_uno:
         self.jump_height = jump_height
         self.rect_ground_collition = pygame.Rect(self.rect.x + self.rect.w / 3, self.rect.y + self.rect.h - GROUND_RECT_H, self.rect.w / 3, GROUND_RECT_H)
         
-        self.movement_range = 228  # Ancho de la plataforma (ajusta según tu necesidad)
-       
+        self.movement_range = 228  # Ancho de la plataforma       
         self.move_x = self.speed_walk if self.direction == DIRECTION_R else -self.speed_walk
         
 

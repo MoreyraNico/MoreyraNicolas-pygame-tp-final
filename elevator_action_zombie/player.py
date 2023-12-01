@@ -5,12 +5,12 @@ from assistant import Auxiliar
 
 class Player:
     def __init__(self,x,y,speed_walk,speed_run,gravity,jump_power,frame_rate_ms,move_rate_ms,jump_height) -> None:
-        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/Run.png",6,1)
-        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/Run.png",6,1,True)
-        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/Idle.png",7,1)
-        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/Idle.png",7,1,True)
-        self.jump_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/jump.png",11,1)
-        self.jump_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/jump.png",11,1,True)
+        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("soldier/Run.png",6,1)
+        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("soldier/Run.png",6,1,True)
+        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("soldier/Idle.png",7,1)
+        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("soldier/Idle.png",7,1,True)
+        self.jump_r = Auxiliar.getSurfaceFromSpriteSheet("soldier/jump.png",11,1)
+        self.jump_l = Auxiliar.getSurfaceFromSpriteSheet("soldier/jump.png",11,1,True)
         self.frame = 0
         self.lives = 5
         self.score = 0

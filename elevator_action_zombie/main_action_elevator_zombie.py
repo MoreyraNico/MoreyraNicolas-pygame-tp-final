@@ -13,7 +13,7 @@ screen = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.init()
 clock = pygame.time.Clock()
 
-imagen_fondo = pygame.image.load("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/stage/stage_map_3.png")
+imagen_fondo = pygame.image.load("stage/stage_map.png")
 
 
 #porcion_fondo = imagen_fondo.subsurface((0, 1530, 320, 320))
@@ -87,7 +87,7 @@ while True:
     delta_ms = clock.tick(FPS)
 
     
-    posicion_fondo_y = 2048 - (1530 - camera)
+    posicion_fondo_y = 2048 - (1530 - camera) 
     #print(f"POSICION DEL FONDO:{posicion_fondo_y}")
 
     
@@ -126,7 +126,7 @@ while True:
     player_zombie.draw(screen)
 
     
-
+# DIRECTION SE HACE NEGATIVO CUANDO SUBE EL PERSONAJE EN EL ASCENSOR, Y VA ESCALANDO
     
     for plataforma in lista_plataformas:
         if player_1.rect_ground_collition.colliderect(plataforma.rect_ground_collition) or player_1.rect_ground_collition.colliderect(plataforma.rect_top_collition):
