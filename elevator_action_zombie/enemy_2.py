@@ -3,16 +3,16 @@ import pygame
 from constants import *
 from assistant import Auxiliar
 
-class Enemy_zombie_uno:
+class Enemy_zombie_dos:
     def __init__(self,x,y,speed_walk,speed_run,gravity,jump_power,frame_rate_ms,move_rate_ms,jump_height,estado_inicial=None,recorrido=None,direction=None) -> None:
-        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Walk_zombie_1.png",10,1)
-        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Walk_zombie_1.png",10,1,True)
-        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Idle_zombie_1.png",9,1)
-        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Idle_zombie_1.png",9,1,True)
-        self.run_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Run_zombie_1.png",8,1)
-        self.run_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Run_zombie_1.png",8,1,True)
-        self.dead_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Dead_zombie_1.png",5,1)
-        self.dead_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Dead_zombie_1.png",5,1,True)
+        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Walk_zombie_2.png",8,1)
+        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Walk_zombie_2.png",8,1,True)
+        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Idle_zombie_2.png",8,1)
+        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Idle_zombie_2.png",8,1,True)
+        self.run_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Run_zombie_2.png",7,1)
+        self.run_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Run_zombie_2.png",7,1,True)
+        self.dead_r = Auxiliar.getSurfaceFromSpriteSheet("zombies/Dead_zombie_2.png",5,1)
+        self.dead_l = Auxiliar.getSurfaceFromSpriteSheet("zombies/Dead_zombie_2.png",5,1,True)
         #self.jump_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/jump.png",11,1)
         #self.jump_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/navar/Desktop/UTN/juego_programacion/elevator_action_zombie/soldier/jump.png",11,1,True)
         self.frame = 0
@@ -29,8 +29,6 @@ class Enemy_zombie_uno:
         
         self.recorrido_inicial = recorrido
         self.direction = direction
-        self.direction_atribute = DIRECTION_R
-        
         self.recorrido = 0
         self.estado_inicial = estado_inicial
         self.estado_vida = True
@@ -50,8 +48,7 @@ class Enemy_zombie_uno:
         self.y_start_jump = 0
         self.jump_height = jump_height
         self.rect_ground_collition = pygame.Rect(self.rect.x + self.rect.w / 3, self.rect.y + self.rect.h - GROUND_RECT_H, self.rect.w / 5, GROUND_RECT_H)
-        self.rect_top_collition = pygame.Rect(self.rect.x + self.rect.w / 3, self.rect.y+60, self.rect.w / 5, GROUND_RECT_H)
-    
+        self.rect_top_collition = pygame.Rect(self.rect.x + self.rect.w / 3, self.rect.y+30, self.rect.w / 5, GROUND_RECT_H)
     
     def stay(self):
         if(self.animation != self.stay_r and self.animation != self.stay_l):
@@ -83,8 +80,7 @@ class Enemy_zombie_uno:
                         if self.direction == 1 :
                             
                                 self.move_x = self.speed_walk
-                                self.animation = self.walk_r
-                                self.direction_atribute = DIRECTION_R               
+                                self.animation = self.walk_r                
                                 self.add_x(self.move_x)
                                 self.add_y(self.move_y)
                                 if self.recorrido == self.recorrido_inicial or self.rect.x < 0:
@@ -95,7 +91,6 @@ class Enemy_zombie_uno:
                             
                                 self.move_x = -1*self.speed_walk
                                 self.animation = self.walk_l
-                                self.direction_atribute = DIRECTION_L
                                 self.add_x(self.move_x)
                                 self.add_y(self.move_y)
                                 if self.recorrido == self.recorrido_inicial or self.rect.x < 0:
@@ -106,8 +101,7 @@ class Enemy_zombie_uno:
                         self.recorrido += abs(self.direction)            
                         if self.direction > 0:
                             self.move_x = self.speed_run
-                            self.animation = self.run_r
-                            self.direction_atribute = DIRECTION_R               
+                            self.animation = self.run_r                
                             self.add_x(self.move_x)
                             self.add_y(self.move_y)
                             if self.recorrido == self.recorrido_inicial or self.rect.x < 0 :
@@ -117,7 +111,6 @@ class Enemy_zombie_uno:
                         if self.direction == -1:                
                             self.move_x = -1*self.speed_run
                             self.animation = self.run_l
-                            self.direction_atribute = DIRECTION_L   
                             self.add_x(self.move_x)
                             self.add_y(self.move_y)
                             if self.recorrido == self.recorrido_inicial or self.rect.x < 0 :
