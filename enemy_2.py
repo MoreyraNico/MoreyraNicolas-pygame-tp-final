@@ -25,7 +25,9 @@ class Enemy_zombie_dos:
         self.move_x = 0
         self.move_y = 0
         self.attack_sound = pygame.mixer.Sound('Audio\soldier_herido.wav')
+        self.attack_sound.set_volume(0.04)
         self.death_sound = pygame.mixer.Sound('Audio\enemy_down.wav')
+        self.death_sound.set_volume(0.04)
         self.score_zombie = 100
         self.speed_walk =  speed_walk
         self.speed_run =  speed_run

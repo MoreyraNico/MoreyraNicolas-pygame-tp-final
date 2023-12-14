@@ -3,7 +3,8 @@ import pygame
 from moviepy.editor import VideoFileClip
 from constants import *
 from assistant import Auxiliar
-from disparo import Disparo
+from items import Disparo
+import sqlite3
 
 
 pygame.init()
@@ -26,24 +27,29 @@ class Player:
         self.shoot_down_r = Auxiliar.getSurfaceFromSpriteSheet("soldier/Shot_2.png",4,1)
         self.shoot_down_l = Auxiliar.getSurfaceFromSpriteSheet("soldier/Shot_2.png",4,1,True)
         self.shoot_recharge_r = Auxiliar.getSurfaceFromSpriteSheet("soldier/Recharge.png",8,1)
-        self.shoot_recharge_l = Auxiliar.getSurfaceFromSpriteSheet("soldier/Recharge.png",8,1,True)
-        
+        self.shoot_recharge_l = Auxiliar.getSurfaceFromSpriteSheet("soldier/Recharge.png",8,1,True)        
         self.disparo_sound = pygame.mixer.Sound('Audio/disparo.wav')
+        self.disparo_sound.set_volume(0.05)
         self.disparo_sin_balas = pygame.mixer.Sound('Audio/sin_balas.wav')
-        
-        
-        
+        self.disparo_sin_balas.set_volume(0.1)
         self.death_sound = pygame.mixer.Sound('Audio\death_soldier.wav')
-        self.video_muerte_path = 'video/muerte_juego.avi'  # Ruta de tu archivo de video
+        self.death_sound.set_volume(0.1)        
+        
+        self.video_muerte_path = 'video/muerte_juego.avi'
         self.video_muerte = VideoFileClip(self.video_muerte_path)
         self.is_playing_video = False
         self.death_time = 0
         self.current_time = 0
         self.is_dead = False
         self.damage_max = 120
-        self.damage_recibido = 0
-        self.frame = 0
-        
+        self.damage_recibido = 0        
+
+        self.lista_balas = []
+        self.max_shoots = 5  
+        self.shoot_count = 0   
+        self.state_recharge = True 
+       
+        self.nombre_usuario = None       
         self.lives = 2
         self.lives_count = 0
         self.vida = True
@@ -55,30 +61,23 @@ class Player:
         self.speed_run =  speed_run
         self.gravity = gravity
         self.jump_power = jump_power
-        self.animation = self.stay_r
-        self.state_colittion = True
-
-        self.direction = DIRECTION_R
-        self.image = self.animation[self.frame]
-
-        self.lista_balas = []
-        self.max_shoots = 5  
-        self.shoot_count = 0   
-        self.state_recharge = True 
+        self.animation = self.stay_r        
         
+        self.image = self.animation[self.frame]        
         self.is_jump = False
         self.y_start_jump = 0
         self.jump_height = jump_height
-        
+        self.frame = 0
         self.tiempo_transcurrido_animation = 0
         self.frame_rate_ms = frame_rate_ms 
         self.tiempo_transcurrido_move = 0
-        self.move_rate_ms = move_rate_ms       
+        self.move_rate_ms = move_rate_ms 
 
+        self.state_colittion = True
+        self.direction = DIRECTION_R
         self.rect = self.image.get_rect()
         self.x_inicial = x
         self.y_inicial = y
-
         self.rect.x = x
         self.rect.y = y
         self.rect_ground_collition = pygame.Rect(self.rect.x + self.rect.w / 3, self.rect.y + self.rect.h - GROUND_RECT_H, self.rect.w / 5, GROUND_RECT_H)
@@ -163,7 +162,7 @@ class Player:
                         self.frame = 0
                         #self.state_colittion = False
                         self.death_sound.play()
-                        self.vida = False
+                        #self.vida = False
                         self.is_dead = True
                         self.death_time = pygame.time.get_ticks()
                         
@@ -172,12 +171,11 @@ class Player:
                         self.move_x = 0
                         self.frame = 0
                         self.death_sound.play()
-                        self.vida = False
+                        #self.vida = False
                         self.is_dead = True
                         self.death_time = pygame.time.get_ticks()
     
     def revive(self):
-            # Restablece la posición del jugador y otros atributos al morir
             self.damage_recibido = 0
             self.rect.x = 0
             self.rect_ground_collition.x = 42
@@ -188,7 +186,7 @@ class Player:
             self.rect_top_collition.y = 560
             self.rect_disparo.y = 560
             
-            self.vida = True
+            #self.vida = True
             self.is_dead = False
             self.stay()
         
@@ -294,14 +292,12 @@ class Player:
             if self.current_time - self.death_time >= 3000:
                 if self.lives_count <= self.lives:   # 3000 ms = 3 segundos
                     self.lives_count += 1
-                    self.revive()  # Llama a la función revive cuando ha pasado el tiempo después de la muerte
-
-                    # Restablece los estados después de revivir
-                    self.vida = True
+                    self.revive()                     
                     self.is_dead = False
                     #self.stay() 
                 else:
                     self.video_muerte.preview()
+                    self.vida = False
                     self.lives_count=0
 
     def play_death_video(self):
@@ -331,7 +327,7 @@ class Player:
         
 
     def events(self,delta_ms,keys,screen):
-        if self.vida and not self.is_dead:
+        if not self.is_dead:
             if(keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]):
                 self.walk(DIRECTION_L)
             if(not keys[pygame.K_LEFT] and keys[pygame.K_RIGHT]):
@@ -381,7 +377,7 @@ class Player:
             
     
         if x is not None:
-            if self.shoot_count < self.max_shoots:  # Verifica si no se excede el límite
+            if self.shoot_count < self.max_shoots:  
                 self.lista_balas.append(Disparo(x, y, direccion_bala))
                 self.shoot_count += 1 
     
@@ -394,6 +390,16 @@ class Player:
                 self.lista_balas.pop(i)
                 i -= 1
             i += 1
+
+    def guardar_puntuacion(self):
+        conexion = sqlite3.connect("tabla_puntuaciones.db")
+        cursor = conexion.cursor()        
+        
+        cursor.execute("INSERT INTO Puntuaciones (nombre_usuario, puntuacion) VALUES (?, ?)", (self.nombre_usuario, self.score))
+        
+        
+        conexion.commit()
+        conexion.close()
         
 
 

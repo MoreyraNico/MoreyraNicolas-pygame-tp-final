@@ -14,11 +14,9 @@ class Platform:
         self.rect.y = y
         self.y_inicial = y        
 
-        # Se generan los rectángulos de colisión para la plataforma        
         self.rect_ground_collition = pygame.Rect(self.rect.x+10, self.rect.y + h - GROUND_RECT_H, self.rect.w-25, GROUND_RECT_H)
         self.rect_top_collition = pygame.Rect(self.rect.x, self.rect.y, self.rect.w, GROUND_RECT_H)
         self.tope = tope
-
         
         self.recorrido = 0        
         self.direction = 1
@@ -39,7 +37,7 @@ class Platform:
         #print("Estoy aca")    
         if self.is_static:
             self.direction = 0     
-            # Si es estática, no se actualiza la posición
+            
         if not self.is_static:
             
             if self.direction != 0:

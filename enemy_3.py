@@ -20,7 +20,10 @@ class Enemy_zombie_tres:
         self.attack_l = Auxiliar.getSurfaceFromSpriteSheet("zombies\Attack_zombie_3.png",4,1,True)
         self.is_attack = False
         
+        self.attack_sound = pygame.mixer.Sound('Audio\soldier_herido.wav')
+        self.attack_sound.set_volume(0.05)
         self.death_sound = pygame.mixer.Sound('Audio\enemy_down.wav')
+        self.death_sound.set_volume(0.05)
         self.score_zombie = 100
         self.frame = 0
         self.lives = 5
